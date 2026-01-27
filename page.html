@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Page Title</title>
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                min-height: 300vh;
+                margin-top: 8vh;
+            }
+            header {
+                display: flex;
+                align-items: center;
+                padding: 1vh;
+                height: 6vh;
+                border-bottom: 1px solid black;
+                background-color: aquamarine;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 100;
+            }
+            .wrapper {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 1vh;
+                border-bottom: 1px solid black;
+            }
+            button {
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+            .wrapper-secret-message {
+                display: block;
+                margin-top: 20px;
+                padding: 10px;
+                border: 2px solid #000;
+                background-color: #f0f0f0;
+            }
+            .div-colored {
+                width: 100px;
+                height: 100px;
+                margin-top: 20px;
+                border: 2px solid #000;
+            }
+            #wrapper-cat {
+                width: 300px;
+                height: 300px;
+                border: 2px solid #000;
+                margin-top: 20px;
+                position: relative;
+                overflow: hidden;
+            }
+            #cat {
+                width: 50px;
+                height: 50px;
+                background-color: orange;
+                position: absolute;
+                top: 0;
+                left: 0;
+                border-radius: 50%;
+                transition: transform 0.1s ease;
+            }
+            #calculette {
+                padding: 10px;
+                margin-top: 20px;
+                background-color: black;
+                font-family: sans-serif;
+                aspect-ratio: 9 / 19.5;
+                height: 75vh;
+                border-radius: 45px;
+                max-width: calc(75vh * 9 / 19.5);
+            }
+            .iphoneNotch {
+                width: 54%;
+                height: 30px;
+                background-color: #ffffff;
+                border-bottom-left-radius: 15px;
+                border-bottom-right-radius: 15px;
+                margin: 0 auto;
+                margin-top: -10px;
+            }
+            .screen {
+                width: 100%;
+                height: 33%;
+                background-color: #000000;
+                color: white;
+                margin-bottom: 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                justify-content: flex-end;
+                padding: 10px;
+                box-sizing: border-box;
+                overflow: hidden;
+            }
+            #historyOperation {
+                font-size: 1.5rem;
+                color: #888;
+                min-height: 1.5rem;
+                display: block;
+                text-align: right;
+                white-space: nowrap;
+                overflow-x: auto;
+                overflow-y: hidden;
+                max-width: 100%;
+            }
+            #textOnScreen {
+                font-size: 5rem;
+                display: block;
+                text-align: right;
+                white-space: nowrap;
+                overflow-x: auto;
+                overflow-y: hidden;
+                max-width: 100%;
+            }
+            #historyOperation::-webkit-scrollbar,
+            #textOnScreen::-webkit-scrollbar {
+                display: none;
+            }
+
+            .buttons {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 2.5%;
+            }
+            .buttons div {
+                width: 100%;
+                aspect-ratio: 1 / 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                user-select: none;
+                border-radius: 50%;
+                font-size: 2rem;
+            }
+            .operator {
+                background-color: #ff9500;
+                color: white;
+                box-shadow:  inset -1px -1px 1px 0px #ffc97d, inset 1px 1px 1px 0px #ffc97d;
+            }
+            .utilities {
+                background-color: #878787;
+                color: white;
+                box-shadow:  inset -0.5px -0.5px 1px 0px #e1e1e1, inset  0.5px  0.5px 1px 0px #e1e1e1;
+            }
+            .numbers {
+                background-color: #3d3d3d;
+                color: white;
+                box-shadow:  inset -0.5px -0.5px 1px 0px #616161, inset  0.5px  0.5px 1px 0px #919191;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <p>Position du scroll: <span id="scrollPosition"></span></p>
+        </header>
+        <div class="wrapper">
+            <button id="btn1" >Click me</button>
+            <div class="wrapper-secret-message">
+                <p id="secretMessage"></p>
+            </div>
+        </div>
+        <div class="wrapper">
+            <button id="btn2" >Click me</button>
+            <div class="div-colored"></div>
+        </div>
+        <div class="wrapper">
+            <div id="mouseTracker"></div>
+            <p id="mousePosition"></p>
+            <div id="wrapper-cat">
+                <div id="cat"></div>
+            </div>
+        </div>
+        <div class="wrapper">
+            <form>
+                <input type="text" id="text" name="text" placeholder="le texte sacré">
+                <br><br>
+                <input type="submit" value="Envoyer">
+                <p id="formMessage"></p>
+            </form>
+        </div>
+        <div class="wrapper">
+            <div id="calculette">
+                <div class="iphoneNotch"></div>
+                <div class="screen">
+                    <span id="historyOperation"></span>
+                    <span id="textOnScreen">0</span>
+                </div>
+                <div class="buttons">
+                    <div id="back" class="utilities"><span>⌫</span></div>
+                    <div id="clear" class="utilities"><span>AC</span></div>
+                    <div id="percent" class="utilities"><span>%</span></div>
+                    <div id="divide" class="operator"><span><img type="image/svg+xml" src="divide.svg" alt="÷"></span></div>
+                    <div id="7" class="numbers"><span>7</span></div>
+                    <div id="8" class="numbers"><span>8</span></div>
+                    <div id="9" class="numbers"><span>9</span></div>
+                    <div id="multiply" class="operator"><span>✕</span></div>
+                    <div id="4" class="numbers"><span>4</span></div>
+                    <div id="5" class="numbers"><span>5</span></div>
+                    <div id="6" class="numbers"><span>6</span></div>
+                    <div id="subtract" class="operator"><span>–</span></div>
+                    <div id="1" class="numbers"><span>1</span></div>
+                    <div id="2" class="numbers"><span>2</span></div>
+                    <div id="3" class="numbers"><span>3</span></div>
+                    <div id="add" class="operator"><span>+</span></div>
+                    <div id="plus-minus" class="numbers"><span>+/–</span></div>
+                    <div id="0" class="numbers"><span>0</span></div>
+                    <div id="decimal" class="numbers"><span>,</span></div>
+                    <div id="equals" class="operator"><span>=</span></div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        const btn1 = document.getElementById("btn1");
+        const secretMessage = document.getElementById("secretMessage");
+        btn1.addEventListener("click", () => 
+        secretMessage.textContent = "Tu a trouvé le message secret !!!");
+
+
+        const btn2 = document.getElementById("btn2");
+        const divColored = document.querySelector(".div-colored");
+        btn2.addEventListener("click", () => {
+            const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+            divColored.style.backgroundColor = randomColor;
+        });
+
+        const mouseTracker = document.getElementById("mouseTracker");
+        const mousePosition = document.getElementById("mousePosition");
+        document.addEventListener("mousemove", (event) => {
+            const x = event.clientX;
+            const y = event.clientY;
+            mousePosition.textContent = `Mouse Position: (X: ${x}, Y: ${y})`;
+        });
+
+        const wrapperCat = document.getElementById("wrapper-cat");
+        const cat = document.getElementById("cat");
+        wrapperCat.addEventListener("mousemove", (event) => {
+            const rect = wrapperCat.getBoundingClientRect();
+            const x = event.clientX - rect.left - (cat.offsetWidth / 2);
+            const y = event.clientY - rect.top - (cat.offsetHeight / 2);
+            cat.style.transform = `translate(${x}px, ${y}px)`;
+        }); 
+
+        const scrollPosition = document.getElementById("scrollPosition");
+        window.addEventListener("scroll", () => {
+            scrollPosition.textContent = window.scrollY + " px";
+
+            const header = document.querySelector("header");
+            const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+            header.style.backgroundColor = randomColor;
+        });
+
+        const form = document.querySelector("form");
+        const formMessage = document.getElementById("formMessage");
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const textInput = document.getElementById("text").value;
+            if (textInput.trim() === "") {  
+                formMessage.textContent = "Erreur : Veuillez entrer un texte sacré.";
+                return;
+            } else {
+                formMessage.textContent = `Vous avez envoyé: ${textInput}`;
+            }
+        });
+
+        // Calculette 
+        const textOnScreen = document.getElementById("textOnScreen");
+        const historyOperation = document.getElementById("historyOperation");
+        let currentInput = "";
+        let lastOperation = null;
+        let justCalculated = false;
+        
+        // Fonction pour formater les nombres avec des espaces tous les 3 chiffres
+        function formatNumber(str) {
+            if (!str || str === "0" || str === "Error") return str;
+            
+            // Séparer la partie avant et après le point/virgule décimal
+            const parts = str.split(/[.,]/);
+            let integerPart = parts[0];
+            const decimalPart = parts[1];
+            
+            // Gérer le signe négatif
+            const isNegative = integerPart.startsWith('-');
+            if (isNegative) {
+                integerPart = integerPart.substring(1);
+            }
+            
+            // Ajouter des espaces tous les 3 chiffres en partant de la droite
+            integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+            
+            // Reconstruire le nombre
+            let result = (isNegative ? '-' : '') + integerPart;
+            if (decimalPart !== undefined) {
+                result += ',' + decimalPart;
+            }
+            
+            return result;
+        }
+        
+        document.querySelectorAll(".buttons div").forEach(button => {
+            button.addEventListener("click", () => {
+                const value = button.id;
+                if (value === "clear") {
+                    currentInput = "";
+                    historyOperation.textContent = "";
+                    lastOperation = null;
+                    justCalculated = false;
+                } else if (value === "back") {
+                    currentInput = currentInput.slice(0, -1);
+                    justCalculated = false;
+                } else if (value === "equals") {
+                    if (justCalculated && lastOperation) {
+                        // Réappliquer la dernière opération
+                        try {
+                            const expression = currentInput + lastOperation.operator + lastOperation.operand;
+                            const result = eval(expression.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-')).toString();
+                            historyOperation.textContent = formatNumber(expression);
+                            currentInput = result;
+                        } catch {
+                            currentInput = "Error";
+                        }
+                    } else if (currentInput) {
+                        try {
+                            const expression = currentInput;
+                            // Extraire le dernier opérateur et opérande
+                            const operatorMatch = expression.match(/([×÷+−])([^×÷+−]+)$/);
+                            if (operatorMatch) {
+                                lastOperation = {
+                                    operator: operatorMatch[1],
+                                    operand: operatorMatch[2]
+                                };
+                            }
+                            const result = eval(expression.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-')).toString();
+                            historyOperation.textContent = formatNumber(expression);
+                            currentInput = result;
+                            justCalculated = true;
+                        } catch {
+                            currentInput = "Error";
+                            justCalculated = false;
+                        }
+                    }
+                } else {
+                    if (justCalculated && ["multiply", "divide", "add", "subtract"].includes(value)) {
+                        // Si on commence une nouvelle opération après un calcul, ne pas réinitialiser
+                        justCalculated = false;
+                    } else if (justCalculated) {
+                        // Si on tape un chiffre après un calcul, réinitialiser
+                        currentInput = "";
+                        historyOperation.textContent = "";
+                        justCalculated = false;
+                    }
+                    currentInput += (value === "multiply" ? "×" : value === "divide" ? "÷" : value === "add" ? "+" : value === "subtract" ? "−" : value === "percent" ? "/100" : value === "plus-minus" ? "*-1" : value);
+                }
+                textOnScreen.textContent = formatNumber(currentInput) || "0";
+
+                //realign scroll to the end
+                textOnScreen.scrollLeft = textOnScreen.scrollWidth;
+                historyOperation.scrollLeft = historyOperation.scrollWidth;
+            });
+        });
+
+    </script>
+</html>
